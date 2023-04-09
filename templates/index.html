@@ -1,0 +1,17 @@
+<!DOCTYPE html> 
+  <html lang="en">
+  <head>
+    {% include 'layout.html' %}
+    <title>Bork</title>
+  </head>
+  <body>
+    <div class="jumbotron container-fluid">
+      <h1 color="pink">Kiki Command Center</h1>
+      <div class="container-fluid">
+        <img src="{{ url_for('video_feed') }}" alt="Camera Feed">
+      </div>
+      <form action="/intuition" method="post">
+        <button type="submit" class=" capture-button btn btn-lg btn-block cyber-button">Analyze Image</button>
+    </div>
+  </body>
+</html>

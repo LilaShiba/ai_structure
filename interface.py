@@ -19,8 +19,6 @@ SERVO_PIN = 18
 # GPIO.setup(SERVO_PIN, GPIO.OUT)
 
 
-
-
 # Routes
 @app.route('/')
 def index():

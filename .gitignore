@@ -1,0 +1,9 @@
+*.env
+*.env.example
+*.mtx
+*.tsv
+*.dat
+*.csv
+*.pdf
+*.DS_Store
+eyeData

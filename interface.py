@@ -11,7 +11,8 @@ PIR_PIN = 26
 IR_LED_PIN = 17  
 SERVO_PIN = 18
 
-# # Set GPIO pins
+# if body
+# # Set GPIO pins 
 # GPIO.setmode(GPIO.BCM)
 # GPIO.setup(PIR_PIN, GPIO.IN)
 # GPIO.setup(IR_LED_PIN, GPIO.OUT)
@@ -73,6 +74,7 @@ def gen(camera):
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
 # if rpi
 # def gen():
 #     camera.start_preview()

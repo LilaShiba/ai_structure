@@ -29,13 +29,14 @@ class graphInput():
         if len(atom.imgPath) > 1:
             molecule = Molecule(label, atom.moleculeImgPath,dprThreshold,atom.delta)
             # TODO: Implement shortTermMemory x,y cords history
-            print('x:',  molecule.x)
-            print('y:',  molecule.y)
+            # print('x:',  molecule.x)
+            # print('y:',  molecule.y)
             # knn graph where 
             # xAxis=dprRightEye, yAxis=dprLeftEye , hue=label
             # TODO: Refactor for personalized dataset
-            molecule.train()
-            
+            if self.iteration <= 1:
+                molecule.train()
+                #molecule.getFeelingDistro()
             # cool stuff > molecule.showMap(), print(molecule.knnMap)
             # Analogus Reasoning
             cellNetwork = Cell(molecule.x, molecule.y, molecule.mapOfEmotions, knnDepth)

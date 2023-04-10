@@ -31,8 +31,7 @@ class Molecule:
         self.graph = collections.defaultdict(list)
         self.dprThreshold = dprThreshold
         self.deltaPath = delta
-        self.feelingMentalMap = None
-        self.mapOfEmotions = collections.defaultdict(list)
+        self.lightDistro = collections.defaultdict(list)
 
         
         if len(os.listdir(filePath)) > 1:
@@ -84,23 +83,22 @@ class Molecule:
             self.createFolder()
 
     def getFeelingDistro(self):
-        self.lightDistro = collections.defaultdict(list)
         if not self.feelingMentalMap:
             self.train()
 
         for label, data in self.feelingMentalMap.items():
-            left =  [x.leftArray for x in data]
-            right = [x.rightArray for x in data]
-            left = np.array(left).flatten()
-            right = np.array(right).flatten()
-            lc = collections.Counter(left)
-            rc = collections.Counter(right)
+            left  =  [x.leftArray.flatten() for x in data]
+            right =  [x.rightArray.flatten() for x in data]
+
+            left  =  [item for sublist in left for item in sublist]
+            right =  [item for sublist in right for item in sublist]
+
+
+            unique_l, lc = np.unique(left, return_counts=True)
+            unique_r, rc = np.unique(right, return_counts=True)
+
             self.lightDistro[label].append((lc,rc))
             
-            
-
-
-
 
 
     def blurToGaus(self, imgToBlur, kernal=(0,0)):
@@ -178,6 +176,7 @@ class Molecule:
             if vote.most_common(1)[0][1] / len(row['emotion']) > .50:
                 row['emotion'] = vote.most_common(1)[0][0]
                 mapOfEmotions = mapOfEmotions.append(row)
+                #mapOfEmotions = pd.concat([mapOfEmotions, row])
         # cleanMap = pd.DataFrame.from_dict(mapOfEmotions)
         # print(cleanMap)
 

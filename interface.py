@@ -1,23 +1,29 @@
 from flask import Flask, render_template, Response, request
-from agent.eyes import Eyes
+# in dev
+#from agent.eyes import Eyes
 import time
 import os
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
+from picamera import PiCamera
+
 
 
 app = Flask(__name__)
 
+camera = PiCamera()
+camera.resolution = (640, 480)
+camera.framerate = 30
+
 PIR_PIN = 26
 IR_LED_PIN = 17  
 SERVO_PIN = 18
-
-# if body
-# # Set GPIO pins 
-# GPIO.setmode(GPIO.BCM)
-# GPIO.setup(PIR_PIN, GPIO.IN)
-# GPIO.setup(IR_LED_PIN, GPIO.OUT)
-# GPIO.setup(SERVO_PIN, GPIO.OUT)
-
+SWITCH_PIN = 16
+# Set GPIO pins 
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(PIR_PIN, GPIO.IN)
+GPIO.setup(IR_LED_PIN, GPIO.OUT)
+GPIO.setup(SERVO_PIN, GPIO.OUT)
+GPIO.setup(SWITCH_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # Routes
 @app.route('/')
@@ -61,7 +67,6 @@ def ir():
     cycle = {'status': 'complete'}
     return render_template('ir.html',data=cycle)
     
-
 @app.route('/kiki')
 def kiki():
     pass
@@ -74,12 +79,12 @@ def gen(camera):
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 # if rpi
-# def gen():
-#     camera.start_preview()
-#     while True:
-#         frame = get_frame()
-#         yield (b'--frame\r\n'
-#                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+def gen():
+    camera.start_preview()
+    while True:
+        frame = get_frame()
+        yield (b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 def intuition():
     # TODO refactor atoms - tissue
@@ -143,4 +148,9 @@ off_signals = {
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True, threaded=True)
     
+    while True:
+        if not GPIO.input(SWITCH_PIN):
+            break
+        time.sleep(0.1)
+        print("Switch pressed!")
 

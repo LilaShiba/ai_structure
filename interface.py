@@ -148,9 +148,9 @@ off_signals = {
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True, threaded=True)
     
-    while True:
-        if not GPIO.input(SWITCH_PIN):
-            break
-        time.sleep(0.1)
-        print("Switch pressed!")
+    # while True:
+    #     if not GPIO.input(SWITCH_PIN):
+    #         break
+    #     time.sleep(0.1)
+    #     print("Switch pressed!")
 

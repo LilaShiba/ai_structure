@@ -197,6 +197,45 @@ class Jiji():
         plt.show()
         return y_delta              
 
+    def lr_alg(self, ind_vect):
+        '''
+        self.vector as dependent var
+        '''
+
+        # Process Vectors for linear alg
+        y = np.array(self.vector)
+        x = np.array(ind_vect)
+        ones = np.ones(len(x))
+        X = np.column_stack((ones, x))
+
+        # Compute the coefficients using the normal equation
+        # theta = ((X.T * X)^-1 (X.T)
+        Xt_X_inv = np.linalg.inv(np.dot(X.T, X))
+        theta = np.dot(np.dot(Xt_X_inv, X.T), y)
+    
+        # Extract the slope and intercept from the coefficients
+        intercept, slope = theta[0], theta[1]
+    
+        # Compute the predicted values of y
+        y_pred = np.dot(X, theta)
+    
+        # Plot the input data and the linear regression model
+        plt.scatter(x, y)
+        plt.plot(x, y_pred, color='red')
+        plt.xlabel('x')
+        plt.ylabel('y')
+        plt.show()
+    
+        # Return the intercept and slope
+        return intercept, slope
+
+
+
+
+
+
+
+
     def knn_init(self):
         self.create_node_list()
         self.create_graph()
